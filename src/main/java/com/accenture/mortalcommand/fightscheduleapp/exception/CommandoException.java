@@ -6,4 +6,8 @@ public class CommandoException extends Exception {
     public CommandoException(String message) {
         super(message);
     }
+
+    public CommandoException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

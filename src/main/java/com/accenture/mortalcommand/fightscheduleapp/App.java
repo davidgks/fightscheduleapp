@@ -2,6 +2,7 @@ package com.accenture.mortalcommand.fightscheduleapp;
 
 import com.accenture.mortalcommand.fightscheduleapp.commands.*;
 import com.accenture.mortalcommand.fightscheduleapp.exception.CommandoException;
+import com.accenture.mortalcommand.fightscheduleapp.exception.DataBaseException;
 import com.accenture.mortalcommand.fightscheduleapp.fights.Fight;
 
 import java.sql.Connection;
@@ -16,10 +17,16 @@ import java.util.Scanner;
  */
 public class App {
 
-    public void run() throws SQLException, CommandoException {
+    public void run() {
 
         Connector connector = new Connector();
-        Connection connection = connector.getConnection();
+        Connection connection = null;
+        try {
+            connection = connector.getConnection();
+        } catch (SQLException e) {
+            throw new DataBaseException("Something went wrong!", e);
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         // Data Storage
@@ -33,11 +40,17 @@ public class App {
             System.out.println("?>");
             String userCommand = scanner.nextLine();
 
-            for (Command command : commands) {
-                if (command.shouldExecute(userCommand)) {
-                    shouldRun = command.execute();
+            try {
+                for (Command command : commands) {
+                    if (command.shouldExecute(userCommand)) {
+                        shouldRun = command.execute();
+                    }
                 }
+            } catch (CommandoException e) {
+                System.err.println("something went wrong!");
+                e.printStackTrace();
             }
+
 
         }
     }
@@ -56,11 +69,7 @@ public class App {
         return commands;
     }
 
-    public static void main(String[] args) throws CommandoException {
-        try {
-            new App().run();
-        } catch (SQLException e) {
-            throw new CommandoException("Commando exception thrown!");
-        }
+    public static void main(String[] args) {
+        new App().run();
     }
 }

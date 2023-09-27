@@ -33,7 +33,7 @@ public class ShowCommand implements Command {
             }
             return true;
         } catch (SQLException e) {
-            throw new CommandoException("Commando exception thrown!");
+            throw new CommandoException("Commando exception thrown!", e);
         }
     }
 

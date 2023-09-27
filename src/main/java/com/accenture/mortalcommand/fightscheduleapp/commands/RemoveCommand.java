@@ -21,7 +21,7 @@ public class RemoveCommand implements Command {
     public boolean execute() throws CommandoException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    " from fight where id = ?"
+                    "delete from fight where id = ?"
             );
             System.out.println("What fight do you wanna delete?");
             int fightID = Integer.parseInt(scanner.nextLine());
@@ -31,8 +31,7 @@ public class RemoveCommand implements Command {
             System.out.println("fight " + fightID + " deleted");
             return true;
         } catch (SQLException e) {
-            throw new CommandoException("Commando exception thrown!");
-
+            throw new CommandoException("Commando exception thrown!", e);
         }
 
     }

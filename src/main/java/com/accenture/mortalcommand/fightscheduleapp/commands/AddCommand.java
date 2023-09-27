@@ -58,7 +58,7 @@ public class AddCommand implements Command {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            throw new CommandoException("Commando exception thrown!");
+            throw new CommandoException("Commando exception thrown!", e);
         }
 
 
